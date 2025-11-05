@@ -15,8 +15,8 @@ def initialize_blockchain():
         # Add sample blocks
         for i in range(3):
             txs = [
-                Transaction(f"Alice", f"Bob", 10.0 + i, time.time()),
-                Transaction(f"Bob", f"Charlie", 5.0 + i, time.time())
+                Transaction(f"Anshika", f"Parneeka", 10.0 + i, time.time()),
+                Transaction(f"Parneeka", f"Cherry", 5.0 + i, time.time())
             ]
             st.session_state.blockchain.add_block(txs)
 

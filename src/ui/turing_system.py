@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 def render_turing_system(blockchain):
     st.header("Turing System")
     
@@ -8,21 +7,29 @@ def render_turing_system(blockchain):
     
     with col1:
         _render_state_evolution(blockchain)
-    
-    # with col2:
-    #     _render_state_transition_function()
-
-
+   
 def _render_state_evolution(blockchain):
-    st.write("**State Evolution:**")
+    st.write("**State Evolution (Unique States)**:")
+    
+    state_counts = {}  
     
     for i in range(len(blockchain.chain)):
         temp_chain = blockchain.chain[:i+1]
         state = _calculate_state(temp_chain)
-        
-        with st.expander(f"State at Block {i}", expanded=(i == len(blockchain.chain)-1)):
-            if state:
-                for acc, bal in sorted(state.items()):
+
+        state_key = tuple(sorted(state.items())) if state else None
+
+        if state_key in state_counts:
+            state_counts[state_key].append(i)
+        else:
+            state_counts[state_key] = [i]
+    
+    for state_key, blocks in state_counts.items():
+        block_list = ", ".join(map(str, blocks))
+        with st.expander(f"State appears in {len(blocks)} block(s): {block_list}",
+                         expanded=True):
+            if state_key:
+                for acc, bal in state_key:
                     st.write(f"**{acc}:** {bal:.2f} coins")
             else:
                 st.write("*Genesis State*")
@@ -35,25 +42,6 @@ def _calculate_state(chain):
             state[tx.sender] = state.get(tx.sender, 1000.0) - tx.amount
             state[tx.receiver] = state.get(tx.receiver, 0.0) + tx.amount
     return state
-
-
-# def _render_state_transition_function():
-#     """Render explanation of state transition function."""
-#     st.write("**State Transition Function:**")
-#     st.code("""State[n+1] = f(State[n], Input[n])
-
-# def state_transition(state, tx):
-#     new_state = state.copy()
-#     new_state[tx.sender] -= tx.amount
-#     new_state[tx.receiver] += tx.amount
-#     return new_state
-
-# # Properties:
-# # • Deterministic
-# # • State-based computation
-# # • Turing-complete
-# """, language="python")
-
 
 def render_summary(blockchain):
     st.divider()

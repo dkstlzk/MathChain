@@ -86,8 +86,8 @@ def _reset_blockchain():
     st.session_state.blockchain = Blockchain()
     for i in range(3):
         txs = [
-            Transaction(f"Alice", f"Bob", 10.0 + i, time.time()),
-            Transaction(f"Bob", f"Charlie", 5.0 + i, time.time())
+            Transaction(f"Anshika", f"Parneeka", 10.0 + i, time.time()),
+            Transaction(f"Parneeka", f"Cherry", 5.0 + i, time.time())
         ]
         st.session_state.blockchain.add_block(txs)
     st.rerun()
@@ -96,11 +96,9 @@ def _reset_blockchain():
 def _render_add_block_section(blockchain):
     st.write("**Add New Block:**")
     
-    # Initialize pending transactions
     if 'pending_transactions' not in st.session_state:
         st.session_state.pending_transactions = []
     
-    # Display pending transactions
     if st.session_state.pending_transactions:
         st.write("**Pending Transactions:**")
         for idx, tx in enumerate(st.session_state.pending_transactions):
@@ -113,7 +111,6 @@ def _render_add_block_section(blockchain):
                     st.rerun()
         st.write("")
     
-    # Add transaction form
     _render_transaction_form(blockchain)
 
 
@@ -121,9 +118,9 @@ def _render_transaction_form(blockchain):
     c1, c2, c3, c4, c5 = st.columns([2, 2, 1, 1, 1])
     
     with c1:
-        sender = st.text_input("From", "Alice")
+        sender = st.text_input("From", "Anshika")
     with c2:
-        receiver = st.text_input("To", "Bob")
+        receiver = st.text_input("To", "Parneeka")
     with c3:
         amount = st.number_input("Amount", value=10.0, min_value=0.1)
     with c4:
